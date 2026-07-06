@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chunky Chew | Pre-Order</title>
     
     <!-- External Assets -->
@@ -21,75 +21,67 @@
             background-color: var(--bg-cream);
             font-family: 'Poppins', sans-serif;
             color: var(--brand-blue);
-            -webkit-font-smoothing: antialiased;
+            font-weight: 500;
         }
 
+        /* Poppins Bold for Headers */
         h1, h2, h3, .font-bold {
             font-weight: 700 !important;
         }
 
-        /* --- CALENDAR CROP FIX --- */
-        .flatpickr-calendar {
-            width: 300px !important;
-            max-width: 92vw !important;
-            margin-bottom: 20px !important; /* Forces breathing room at bottom */
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05) !important;
-            border: 0 !important;
-        }
-        
-        .flatpickr-innerContainer {
-            padding-bottom: 10px !important; /* Prevents last row crop */
-        }
-
-        .flatpickr-day.selected {
-            background: var(--brand-blue) !important;
-            border-color: var(--brand-blue) !important;
-        }
-
-        /* --- HORIZONTAL CARD FIX --- */
+        /* Card Styling */
         .cookie-card {
             background: white;
+            transition: all 0.3s ease;
             border: 1px solid rgba(74, 118, 207, 0.1);
-            display: flex;
-            flex-direction: row; /* Always horizontal */
-            align-items: center;
-            padding: 12px;
-            gap: 16px;
-        }
-
-        .img-square {
-            width: 100px;
-            height: 100px;
-            flex-shrink: 0;
             overflow: hidden;
-            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
         }
 
         @media (min-width: 640px) {
-            .img-square { width: 120px; height: 120px; }
+            .cookie-card { flex-direction: row; align-items: center; }
         }
 
+        .cookie-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(74, 118, 207, 0.1);
+            border-color: var(--brand-blue);
+        }
+
+        /* Image Styling */
         .item-img {
             width: 100%;
-            height: 100%;
+            height: 180px;
             object-fit: cover;
-            background: #f4f4f4;
+            background: #f0f0f0;
+        }
+
+        @media (min-width: 640px) {
+            .item-img { width: 140px; height: 140px; border-radius: 12px; margin: 12px; }
+        }
+
+        .btn-primary {
+            background-color: var(--brand-blue);
+            color: white;
+            transition: all 0.3s;
         }
 
         .qty-btn {
-            width: 34px;
-            height: 34px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             border: 2px solid var(--brand-blue);
             color: var(--brand-blue);
-            font-size: 1.1rem;
+            font-size: 1.2rem;
+            cursor: pointer;
             background: transparent;
         }
 
-        .qty-btn:active {
+        .qty-btn:hover {
             background: var(--brand-blue);
             color: white;
         }
@@ -97,81 +89,82 @@
         input, textarea {
             background: white !important;
             border: 1.5px solid rgba(74, 118, 207, 0.15) !important;
-            padding: 12px 14px !important;
-            border-radius: 10px !important;
+            padding: 14px !important;
+            border-radius: 12px !important;
             color: var(--brand-blue) !important;
-            width: 100%;
+        }
+
+        /* Friday Only Calendar Theme */
+        .flatpickr-day.selected {
+            background: var(--brand-blue) !important;
+            border-color: var(--brand-blue) !important;
         }
 
         #confirmation-screen { display: none; }
-        .logo-box { max-width: 180px; margin: 0 auto; }
+
+        .logo-box { max-width: 240px; margin: 0 auto; }
+        .logo-img { width: 100%; height: auto; }
     </style>
 </head>
 <body class="p-4 md:p-12">
 
-    <div id="main-app" class="max-w-xl mx-auto">
+    <div id="main-app" class="max-w-2xl mx-auto">
         
-        <!-- Logo Header -->
-        <header class="text-center mb-10">
+        <!-- Header (Logo Only, No Subhead) -->
+        <header class="text-center mb-12">
             <div class="logo-box">
-                <img src="logo.png" alt="Chunky Chew" class="w-full h-auto" onerror="this.onerror=null; this.src='https://via.placeholder.com/180x70?text=Chunky+Chew';">
+                <img src="logo.png" alt="Chunky Chew" class="logo-img" onerror="this.onerror=null; this.src='https://via.placeholder.com/250x100?text=Chunky+Chew';">
             </div>
         </header>
 
-        <!-- Menu: Photos Left, Text Right -->
-        <section class="mb-8">
-            <h2 class="text-lg mb-6 uppercase tracking-[0.2em] text-center opacity-60">Menu</h2>
-            <div class="space-y-4">
+        <!-- Menu Section with Photos -->
+        <section class="mb-10">
+            <h2 class="text-2xl mb-8 uppercase tracking-widest text-center border-b border-blue-100 pb-4">Our Menu</h2>
+            <div class="space-y-6">
                 
-                <!-- Item 1 -->
-                <div class="cookie-card rounded-2xl shadow-sm">
-                    <div class="img-square">
-                        <img src="og.jpg" alt="OG Chunk" class="item-img" onerror="this.src='https://via.placeholder.com/150?text=OG';">
-                    </div>
-                    <div class="flex-grow flex flex-col justify-between h-full">
+                <!-- Item 1: OG -->
+                <div class="cookie-card rounded-3xl">
+                    <img src="og.jpg" alt="OG Chunk" class="item-img" onerror="this.src='https://via.placeholder.com/150?text=OG+Chunk';">
+                    <div class="p-5 flex-grow flex items-center justify-between">
                         <div>
-                            <h3 class="text-lg leading-tight">OG Chunk</h3>
-                            <p class="text-sm font-bold opacity-60">RM 9.50</p>
+                            <h3 class="text-xl">OG Chunk</h3>
+                            <p class="opacity-60 font-bold">RM 9.50</p>
                         </div>
-                        <div class="flex items-center gap-5 mt-2">
+                        <div class="flex items-center gap-4">
                             <button onclick="updateQty('og', -1)" class="qty-btn">−</button>
-                            <span id="qty-og" class="font-bold text-lg w-4 text-center">0</span>
+                            <span id="qty-og" class="text-xl font-bold w-4 text-center">0</span>
                             <button onclick="updateQty('og', 1)" class="qty-btn">+</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Item 2 -->
-                <div class="cookie-card rounded-2xl shadow-sm">
-                    <div class="img-square">
-                        <img src="nutella.jpg" alt="Nutella" class="item-img" onerror="this.src='https://via.placeholder.com/150?text=Nutella';">
-                    </div>
-                    <div class="flex-grow flex flex-col justify-between h-full">
+                <!-- Item 2: Nutella -->
+                <div class="cookie-card rounded-3xl">
+                    <img src="nutella.jpg" alt="Gooey Nutella" class="item-img" onerror="this.src='https://via.placeholder.com/150?text=Nutella';">
+                    <div class="p-5 flex-grow flex items-center justify-between">
                         <div>
-                            <h3 class="text-lg leading-tight">Gooey Nutella</h3>
-                            <p class="text-sm font-bold opacity-60">RM 11.00</p>
+                            <h3 class="text-xl">Gooey Nutella</h3>
+                            <p class="opacity-60 font-bold">RM 11.00</p>
                         </div>
-                        <div class="flex items-center gap-5 mt-2">
+                        <div class="flex items-center gap-4">
                             <button onclick="updateQty('nutella', -1)" class="qty-btn">−</button>
-                            <span id="qty-nutella" class="font-bold text-lg w-4 text-center">0</span>
+                            <span id="qty-nutella" class="text-xl font-bold w-4 text-center">0</span>
                             <button onclick="updateQty('nutella', 1)" class="qty-btn">+</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Item 3 -->
-                <div class="cookie-card rounded-2xl shadow-sm">
-                    <div class="img-square">
-                        <img src="smores.jpg" alt="Smores" class="item-img" onerror="this.src='https://via.placeholder.com/150?text=Smores';">
-                    </div>
-                    <div class="flex-grow flex flex-col justify-between h-full">
+                <!-- Item 3: Smores -->
+                <div class="cookie-card rounded-3xl">
+                    <img src="smores.jpg" alt="Toasty Smores" class="item-img" onerror="this.src='https://via.placeholder.com/150?text=Smores';">
+                    <div class="p-5 flex-grow flex items-center justify-between">
                         <div>
-                            <h3 class="text-lg leading-tight">Toasty S'mores</h3>
-                            <p class="text-sm font-bold opacity-60">RM 11.00</p>
+                            <h3 class="text-xl">Toasty S'mores</h3>
+                            <p class="opacity-60 font-bold">RM 11.00</p>
                         </div>
-                        <div class="flex items-center gap-5 mt-2">
+                        <div class="flex items-center gap-4">
                             <button onclick="updateQty('smores', -1)" class="qty-btn">−</button>
-                            <span id="qty-smores" class="font-bold text-lg w-4 text-center">0</span>
+                            <span id="qty-smores" class="text-xl font-bold w-4 text-center">0</span>
                             <button onclick="updateQty('smores', 1)" class="qty-btn">+</button>
                         </div>
                     </div>
@@ -180,67 +173,74 @@
             </div>
         </section>
 
-        <!-- Summary -->
-        <div class="bg-white p-5 rounded-2xl mb-8 flex justify-between items-center border border-blue-50 shadow-sm">
-            <span class="text-xs uppercase tracking-widest opacity-40 font-bold">Subtotal</span>
-            <span id="total-price" class="text-2xl font-bold">RM 0.00</span>
+        <!-- Dynamic Summary Bar -->
+        <div class="bg-white p-6 rounded-3xl mb-10 flex justify-between items-center shadow-sm border border-blue-50">
+            <span class="text-sm uppercase tracking-widest opacity-50 font-bold">Order Subtotal</span>
+            <span id="total-price" class="text-3xl font-bold">RM 0.00</span>
         </div>
 
-        <!-- Form -->
-        <section class="bg-white p-6 rounded-[2rem] shadow-sm border border-blue-50">
-            <h2 class="text-center text-lg uppercase tracking-widest mb-6 opacity-60">Pre-Order Form</h2>
-            <form id="orderForm" class="space-y-4">
+        <!-- Details Form -->
+        <section class="bg-white p-8 rounded-[2.5rem] shadow-sm border border-blue-50">
+            <h2 class="text-2xl mb-8 text-center uppercase tracking-widest">Pickup Details</h2>
+            <form id="orderForm" class="space-y-6">
                 <div>
-                    <label class="block text-[10px] font-bold uppercase mb-1">Full Name</label>
-                    <input type="text" id="name" required placeholder="Enter name">
+                    <label class="block text-xs font-bold uppercase mb-2">Name</label>
+                    <input type="text" id="name" required class="w-full" placeholder="Enter your full name">
                 </div>
                 
-                <div>
-                    <label class="block text-[10px] font-bold uppercase mb-1">WhatsApp Number</label>
-                    <input type="tel" id="phone" required placeholder="0123456789">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-xs font-bold uppercase mb-2">Phone</label>
+                        <input type="tel" id="phone" required class="w-full" placeholder="012-3456789">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase mb-2">Email</label>
+                        <input type="email" id="email" required class="w-full" placeholder="hello@email.com">
+                    </div>
                 </div>
 
                 <div>
-                    <label class="block text-[10px] font-bold uppercase mb-1">Select Friday</label>
-                    <input type="text" id="pickup-date" placeholder="Choose a date" readonly required class="cursor-pointer">
+                    <label class="block text-xs font-bold uppercase mb-2">Pickup Date (Friday Only)</label>
+                    <input type="text" id="pickup-date" placeholder="Select a Friday" required class="w-full bg-white cursor-pointer">
                 </div>
 
                 <div>
-                    <label class="block text-[10px] font-bold uppercase mb-1">Notes (Optional)</label>
-                    <textarea id="notes" rows="2" placeholder="Any requests?"></textarea>
+                    <label class="block text-xs font-bold uppercase mb-2">Special Instructions</label>
+                    <textarea id="notes" rows="2" class="w-full" placeholder="Any specific notes for the baker?"></textarea>
                 </div>
 
-                <button type="submit" class="w-full bg-[#4A76CF] text-white font-bold py-4 rounded-xl text-md mt-2 uppercase tracking-widest shadow-md active:scale-95 transition-all">
-                    Next Step
+                <button type="submit" class="w-full btn-primary font-bold py-5 rounded-2xl text-lg mt-4 shadow-xl uppercase tracking-widest transform active:scale-95 transition-all">
+                    Review Order Summary
                 </button>
             </form>
         </section>
 
-        <footer class="mt-12 text-center opacity-30 text-[9px] pb-10 uppercase tracking-[0.4em]">
+        <footer class="mt-16 text-center opacity-30 text-[10px] pb-12 uppercase tracking-[0.3em]">
             &copy; 2026 Chunky Chew
         </footer>
     </div>
 
-    <!-- Confirmation Screen -->
+    <!-- Confirmation Screen Overlay -->
     <div id="confirmation-screen" class="fixed inset-0 bg-white z-50 flex items-center justify-center p-6">
         <div class="max-w-md w-full text-center">
-            <h2 class="text-3xl font-bold mb-6">Confirm Order</h2>
-            <div class="bg-[#F8F9FF] p-6 rounded-[2rem] text-left mb-6 border border-blue-50">
-                <div id="conf-summary" class="space-y-3 mb-4 border-b border-blue-100 pb-4 text-sm"></div>
-                <div class="flex justify-between font-bold text-xl mb-6">
+            <h2 class="text-4xl font-bold mb-8">Ready to Send?</h2>
+            <div class="bg-[#F8F9FF] p-8 rounded-[2.5rem] text-left mb-8 border border-blue-50">
+                <div id="conf-summary" class="space-y-4 mb-6 border-b border-blue-100 pb-6"></div>
+                <div class="flex justify-between font-bold text-2xl mb-8">
                     <span>Total</span>
                     <span id="conf-total">RM 0.00</span>
                 </div>
-                <div class="p-3 bg-white rounded-xl border border-blue-100">
-                    <p class="text-[9px] uppercase font-bold opacity-40 mb-0.5">Collection Date</p>
-                    <p id="conf-date" class="font-bold text-md"></p>
+                <div class="p-4 bg-white rounded-2xl border border-blue-100">
+                    <p class="text-[10px] uppercase font-bold opacity-40 mb-1">Friday Collection</p>
+                    <p id="conf-date" class="font-bold text-lg"></p>
                 </div>
             </div>
             
-            <button id="wa-btn" class="w-full bg-[#25D366] text-white py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-3 shadow-lg">
+            <!-- WhatsApp Button updated to 0183661132 -->
+            <button id="wa-btn" class="w-full bg-[#25D366] text-white py-5 rounded-2xl font-bold text-lg flex items-center justify-center gap-3 shadow-lg hover:brightness-110">
                 Send to WhatsApp
             </button>
-            <button onclick="window.location.reload()" class="mt-8 text-[10px] font-bold opacity-30 underline uppercase tracking-widest">Back to Menu</button>
+            <button onclick="window.location.reload()" class="mt-8 text-xs font-bold opacity-30 underline uppercase tracking-widest">Go Back & Edit</button>
         </div>
     </div>
 
@@ -261,19 +261,18 @@
             }
         }
 
-        // FRIDAY-ONLY with Crop Fix Logic
+        // FRIDAY (Day 5) Restriction
         flatpickr("#pickup-date", {
             minDate: "today",
             dateFormat: "l, d F Y",
             disableMobile: "true",
-            static: true, // Calendar appears below input, helps with height calculation
             "enable": [function(date) { return (date.getDay() === 5); }]
         });
 
         document.getElementById('orderForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const total = Object.values(menu).reduce((acc, i) => acc + (i.qty * i.price), 0);
-            if (total <= 0) return alert("Please add at least one cookie!");
+            if (total <= 0) return alert("Please select at least one chunky cookie to proceed!");
 
             document.getElementById('conf-total').innerText = `RM ${total.toFixed(2)}`;
             document.getElementById('conf-date').innerText = document.getElementById('pickup-date').value;
@@ -282,7 +281,7 @@
             let waItems = '';
             for (const key in menu) {
                 if (menu[key].qty > 0) {
-                    summaryHtml += `<div class="flex justify-between"><span>${menu[key].qty}x ${menu[key].name}</span><span>RM ${(menu[key].qty * menu[key].price).toFixed(2)}</span></div>`;
+                    summaryHtml += `<div class="flex justify-between font-bold"><span>${menu[key].qty}x ${menu[key].name}</span><span>RM ${(menu[key].qty * menu[key].price).toFixed(2)}</span></div>`;
                     waItems += `%0A- ${menu[key].qty}x ${menu[key].name}`;
                 }
             }
@@ -293,9 +292,13 @@
 
             document.getElementById('wa-btn').onclick = () => {
                 const name = document.getElementById('name').value;
+                const phone = document.getElementById('phone').value;
                 const date = document.getElementById('pickup-date').value;
                 const notes = document.getElementById('notes').value || "None";
-                const msg = `*NEW PRE-ORDER*%0A*Name:* ${name}%0A*Date:* ${date}%0A%0A*Items:*${waItems}%0A%0A*Total:* RM ${total.toFixed(2)}%0A%0A*Notes:* ${notes}`;
+                
+                const msg = `*NEW CHUNKY CHEW ORDER*%0A*Name:* ${name}%0A*Phone:* ${phone}%0A*Pickup Friday:* ${date}%0A%0A*Items:*${waItems}%0A%0A*Total:* RM ${total.toFixed(2)}%0A%0A*Notes:* ${notes}`;
+                
+                // Target number: 60183661132
                 window.open(`https://wa.me/60183661132?text=${msg}`, '_blank');
             };
         });
