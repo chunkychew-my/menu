@@ -33,10 +33,6 @@
             width: 300px !important; 
             max-width: 95vw !important; 
         }
-        
-        .flatpickr-months .flatpickr-month {
-            height: 40px !important;
-        }
 
         /* --- SQUARE IMAGE FIX --- */
         .img-container {
@@ -61,20 +57,10 @@
             background: #eee;
         }
 
-        /* Card Styling */
         .cookie-card {
             background: white;
             transition: transform 0.2s ease;
             border: 1px solid rgba(74, 118, 207, 0.1);
-        }
-
-        .cookie-card:active {
-            transform: scale(0.98);
-        }
-
-        .btn-primary {
-            background-color: var(--brand-blue);
-            color: white;
         }
 
         .qty-btn {
@@ -97,6 +83,11 @@
             border-radius: 10px !important;
             color: var(--brand-blue) !important;
             appearance: none;
+        }
+
+        .promo-badge {
+            background-color: rgba(74, 118, 207, 0.1);
+            border: 1px dashed var(--brand-blue);
         }
 
         #confirmation-screen { display: none; }
@@ -170,15 +161,27 @@
             </div>
         </section>
 
+        <!-- New Info & Discount Section -->
+        <div class="text-center mb-6 space-y-2">
+            <p class="text-sm font-bold opacity-80">📦 6 pieces per pack</p>
+            <div class="promo-badge py-2 px-4 rounded-xl inline-block">
+                <p class="text-[11px] font-bold uppercase tracking-tight">
+                    🎉 Mix & Match: Get RM6.00 off for every 12 pieces ordered!
+                </p>
+            </div>
+        </div>
+
         <!-- Subtotal -->
         <div class="bg-white p-5 rounded-2xl mb-8 flex justify-between items-center shadow-sm border border-blue-50">
-            <span class="text-xs uppercase tracking-widest opacity-50 font-bold">Total</span>
+            <div class="flex flex-col">
+                <span class="text-xs uppercase tracking-widest opacity-50 font-bold">Total Amount</span>
+                <span id="discount-applied" class="text-[10px] text-green-600 font-bold hidden">Discount applied!</span>
+            </div>
             <span id="total-price" class="text-2xl font-bold">RM 0.00</span>
         </div>
 
         <!-- Order Form Section -->
         <section class="bg-white p-6 rounded-[2rem] shadow-sm">
-            <!-- 1. Changed "Pickup Details" to "Order Details" -->
             <h2 class="text-xl mb-6 text-center uppercase tracking-widest opacity-70">Order Details</h2>
             <form id="orderForm" class="space-y-4">
                 <div>
@@ -194,7 +197,6 @@
                 </div>
 
                 <div>
-                    <!-- 2. Changed "Friday Pickup Date" to "Friday Collection Date" -->
                     <label class="block text-[10px] font-bold uppercase mb-1">Friday Collection Date</label>
                     <input type="text" id="pickup-date" placeholder="Select a Friday" readonly required class="w-full bg-white cursor-pointer">
                 </div>
@@ -204,7 +206,7 @@
                     <textarea id="notes" rows="2" class="w-full" placeholder="Requests?"></textarea>
                 </div>
 
-                <button type="submit" class="w-full btn-primary font-bold py-4 rounded-xl text-md mt-2 uppercase tracking-widest shadow-lg">
+                <button type="submit" class="w-full bg-[#4A76CF] text-white font-bold py-4 rounded-xl text-md mt-2 uppercase tracking-widest shadow-lg">
                     Preview Order
                 </button>
             </form>
@@ -218,10 +220,16 @@
     <!-- Confirmation Screen -->
     <div id="confirmation-screen" class="fixed inset-0 bg-white z-50 flex items-center justify-center p-6">
         <div class="max-w-md w-full text-center">
-            <h2 class="text-3xl font-bold mb-6">Confirm Order</h2>
-            <div class="bg-[#F8F9FF] p-6 rounded-[2rem] text-left mb-6 border border-blue-50">
+            <h2 class="text-3xl font-bold mb-6 text-[#4A76CF]">Confirm Order</h2>
+            <div class="bg-[#F8F9FF] p-6 rounded-[2rem] text-left mb-6 border border-blue-50 shadow-inner">
                 <div id="conf-summary" class="space-y-3 mb-4 border-b border-blue-100 pb-4 text-sm"></div>
-                <div class="flex justify-between font-bold text-xl mb-6">
+                
+                <div id="conf-discount-row" class="flex justify-between text-green-600 text-sm font-bold mb-2 hidden">
+                    <span>Mix & Match Discount</span>
+                    <span id="conf-discount-amt">- RM 0.00</span>
+                </div>
+
+                <div class="flex justify-between font-bold text-2xl mb-6">
                     <span>Total</span>
                     <span id="conf-total">RM 0.00</span>
                 </div>
@@ -250,12 +258,38 @@
             if (item.qty + change >= 0) {
                 item.qty += change;
                 document.getElementById(`qty-${id}`).innerText = item.qty;
-                const total = Object.values(menu).reduce((acc, i) => acc + (i.qty * i.price), 0);
-                document.getElementById('total-price').innerText = `RM ${total.toFixed(2)}`;
+                calculateTotal();
             }
         }
 
-        // FRIDAY (Day 5) Restriction
+        function calculateTotal() {
+            let subtotal = 0;
+            let totalQty = 0;
+            
+            for (const key in menu) {
+                subtotal += menu[key].qty * menu[key].price;
+                totalQty += menu[key].qty;
+            }
+
+            // DISCOUNT LOGIC: RM6 off for every 12 pieces
+            const discountGroups = Math.floor(totalQty / 12);
+            const discountAmount = discountGroups * 6;
+            const finalTotal = subtotal - discountAmount;
+
+            // Update UI
+            document.getElementById('total-price').innerText = `RM ${finalTotal.toFixed(2)}`;
+            const discText = document.getElementById('discount-applied');
+            if (discountAmount > 0) {
+                discText.classList.remove('hidden');
+                discText.innerText = `RM ${discountAmount.toFixed(2)} discount applied!`;
+            } else {
+                discText.classList.add('hidden');
+            }
+
+            return { finalTotal, discountAmount, totalQty };
+        }
+
+        // FRIDAY Restriction
         flatpickr("#pickup-date", {
             minDate: "today",
             dateFormat: "l, d F Y",
@@ -266,12 +300,14 @@
 
         document.getElementById('orderForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const total = Object.values(menu).reduce((acc, i) => acc + (i.qty * i.price), 0);
-            if (total <= 0) return alert("Please select at least one cookie!");
+            const { finalTotal, discountAmount, totalQty } = calculateTotal();
+            
+            if (totalQty <= 0) return alert("Please select at least one cookie!");
 
-            document.getElementById('conf-total').innerText = `RM ${total.toFixed(2)}`;
+            document.getElementById('conf-total').innerText = `RM ${finalTotal.toFixed(2)}`;
             document.getElementById('conf-date').innerText = document.getElementById('pickup-date').value;
 
+            // Confirmation summary logic
             let summaryHtml = '';
             let waItems = '';
             for (const key in menu) {
@@ -280,6 +316,16 @@
                     waItems += `%0A- ${menu[key].qty}x ${menu[key].name}`;
                 }
             }
+            
+            // Show discount on confirmation screen if applicable
+            const confDiscRow = document.getElementById('conf-discount-row');
+            if (discountAmount > 0) {
+                confDiscRow.classList.remove('hidden');
+                document.getElementById('conf-discount-amt').innerText = `- RM ${discountAmount.toFixed(2)}`;
+            } else {
+                confDiscRow.classList.add('hidden');
+            }
+
             document.getElementById('conf-summary').innerHTML = summaryHtml;
             document.getElementById('main-app').style.display = 'none';
             document.getElementById('confirmation-screen').style.display = 'flex';
@@ -289,7 +335,15 @@
                 const name = document.getElementById('name').value;
                 const date = document.getElementById('pickup-date').value;
                 const notes = document.getElementById('notes').value || "None";
-                const msg = `*NEW PRE-ORDER*%0A*Name:* ${name}%0A*Collection Friday:* ${date}%0A%0A*Items:*${waItems}%0A%0A*Total:* RM ${total.toFixed(2)}%0A%0A*Notes:* ${notes}`;
+                
+                let msg = `*NEW PRE-ORDER*%0A*Name:* ${name}%0A*Collection Friday:* ${date}%0A%0A*Items:*${waItems}%0A%0A*Total Quantity:* ${totalQty} pieces`;
+                
+                if(discountAmount > 0) {
+                    msg += `%0A*Promo Discount:* -RM ${discountAmount.toFixed(2)}`;
+                }
+                
+                msg += `%0A*Final Total:* RM ${finalTotal.toFixed(2)}%0A%0A*Notes:* ${notes}`;
+                
                 window.open(`https://wa.me/60183661132?text=${msg}`, '_blank');
             };
         });
